@@ -59,6 +59,7 @@ app.post('/auth', function (request, response) {
             if (results.length > 0) {
                 request.session.loggedin = true;
                 request.session.username = username;
+                request.session.password = password;
                 if (results[0].usertype == "Admin") {
                     response.redirect('/admin');
                 }
@@ -132,6 +133,40 @@ app.post('/user/regComp', function (req, res) {
 
 });
 
+app.post('/user/remComp', function (req, res) {
+    connection.query('SELECT * FROM regcomp', function (error, results, fields) {
+        //req.flash("hey")
+        if (error) {
+            console.log(error);
+        }
+        // else if (results.length > 0) {
+        //     req.flash("error", "This complaint does not Exist!");
+        //     res.redirect("/");
+        // }
+        else {
+            var remcomp = "DELETE FROM regcomp WHERE ComplaintID = ?";
+            var CID = req.body.CID;
+            var psswrd = req.body.password;
+            var user = req.body.uname;
+            if((user == req.session.username) && (psswrd == req.session.password)){
+                connection.query(remcomp, CID, function (error, results, fields) {
+                    if (error) {
+                        console.log(error);
+                        res.redirect('/user/remComp');
+                    } else {
+                        req.flash("success", "Complaint deleted sucessfully");
+                        res.redirect('/user');
+                    }
+                });
+            }
+            else {
+                res.redirect('/user');
+            }
+        };
+
+    });
+});
+
 app.get('/admin', function (request, response) {
     if (request.session.loggedin) {
         // response.send('Welcome to admin home page, ' + request.session.username + '!');
@@ -193,6 +228,76 @@ app.get("/user/viewComp", function (req, res) {
     }
 })
 
+app.get("/admin/Myprof", function (req, res) {
+    if (req.session.loggedin) {
+        str = "select * from login where login.username = '" + req.session.username + "'"
+        connection.query(str, function (err, results, fields) {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                console.log(results);
+                res.render("Myprof.ejs", { details: results });
+            }
+        })
+    } else {
+        req.flash("error", "Please Login to view this page!");
+        res.redirect("/");
+    }
+})
+
+app.get("/admin/viewComp", function (req, res) {
+    if (req.session.loggedin) {
+        str = "select * from regcomp";
+        connection.query(str, function (err, results, fields) {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                console.log(results);
+                res.render("viewComp.ejs", { details: results });
+            }
+        })
+    } else {
+        req.flash("error", "Please Login to view this page!");
+        res.redirect("/");
+    }
+})
+
+app.post('/admin/remUser', function (req, res) {
+    connection.query('SELECT * FROM login', function (error, results, fields) {
+        //req.flash("hey")
+        if (error) {
+            console.log(error);
+        }
+        // else if (results.length > 0) {
+        //     req.flash("error", "This complaint does not Exist!");
+        //     res.redirect("/");
+        // }
+        else {
+            var remuser = "DELETE FROM login WHERE username = ?";
+            var udel = req.body.userDel;
+            var psswrd = req.body.password;
+            var user = req.body.uname;
+            if((user == req.session.username) && (psswrd == req.session.password)){
+                connection.query(remuser, udel, function (error, results, fields) {
+                    if (error) {
+                        console.log(error);
+                        res.redirect('/admin/remUser');
+                    } else {
+                        req.flash("success", "Complaint deleted sucessfully");
+                        res.redirect('/admin');
+                    }
+                });
+            }
+            else {
+                res.redirect('/admin');
+            }
+        };
+
+    });
+});
+
 app.get('/user/regComp',function(request,response){
     response.render('regComp.ejs')
 });
@@ -203,6 +308,10 @@ app.get('/user/remComp',function(request,response){
 
 app.get('/user/viewComp',function(request,response){
     response.render('viewComp.ejs')
+});
+
+app.get('/admin/remUser',function(request,response){
+    response.render('remUser.ejs')
 });
 
 var server = app.listen(3000, function () {

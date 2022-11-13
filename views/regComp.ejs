@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<head>
+    <title>Register Complaints</title>
+</head>
+<body>
+    <div class="regComp">
+        <form action = "regComp" method = "post">
+
+            <label>Image</label><br>
+            <input type = "text" id = "img" placeholder="img" name = "img"><br>
+
+            <label>Location</label><br>
+            <input type = "text" id = "Location" placeholder="Location" name = "Location"><br>
+
+            <label>Type Of Waste</label>
+            <select name = "wtype" id = "wtype" placeholder = "wtype">
+                <option value = "Dry">Dry</option>
+                <option value = "Wet">Wet</option>
+                <option value = "Mix">Mix</option>
+            </select>
+
+            <label>Description</label><br>
+            <input type = "text" id = "Desc" placeholder="Desc" name = "Desc"><br>
+
+            <label>City</label><br>
+            <input type = "text" id = "city" placeholder = "city" name = "city"><br>
+
+            <label>Date</label><br>
+            <input type = "date" id = "date" placeholder = "date" name = "date"><br>
+
+            <label>Street</label><br>
+            <input type = "text" id = "street" placeholder = "street" name = "street"><br>
+
+            <label>Recommended Team Size</label><br>
+            <select name = "rts" id = "rts" placeholder = "rts">
+                <option value = "Large">Large</option>
+                <option value = "Medium">Medium</option>
+                <option value = "Small">Small</option>
+            </select>
+
+            <input type = "submit" value = "add">
+        </form>
+        <button><a href = "/user">Back</a></button>
+    </div>
+</body>

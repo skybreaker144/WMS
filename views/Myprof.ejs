@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<head>
+    <title>My Profile</title>
+</head>
+<body>
+    <div class="Myprof">
+        <% details.forEach(function(detail){%>
+            <div class="card">
+
+                <img src = "<%=detail.Image%>" />
+                <div class = "container">
+                    <label>USERNAME</label><br>
+                    <label><%=detail.username%><label><br>
+                    
+                    <label>PASSWORD</label><br>
+                    <label><%=detail.password%><label><br>
+                    
+                    <label>USERTYPE</label><br>
+                    <label><%=detail.usertype%><label><br>
+
+                    <label>Phone Number 1</label><br>
+                    <label><%=detail.Phone_Num_1%><label><br>
+
+                    <label>Phone Number 2</label><br>
+                    <label><%=detail.Phone_Num_2%><label><br>
+
+                    <label>EMAIL ID</label><br>
+                    <label><%=detail.Email_ID%><label><br>
+
+                    <label>Location</label><br>
+                    <label><%=detail.Location%><label><br>
+                    
+                    <label>FirstName</label><br>
+                    <label><%=detail.FirstName%><label><br>
+
+                    <label>LastName</label><br>
+                    <label><%=detail.LastName%><label><br>
+
+                    <label>City</label><br>
+                    <label><%=detail.City%><label><br>
+
+                    <label>DOB</label><br>
+                    <label><%=detail.DOB%><label><br>
+            
+                </div>
+            </div>
+        <% }); %>
+    </div>
+</body>

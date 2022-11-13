@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<head>
+    <title>My Complaints</title>
+</head>
+<body>
+    <div class = "viewComp">
+        <% details.forEach(function(detail){%>
+            <div class="card">
+
+                <img src = "<%=detail.Image%>" />
+                <div class = "container">
+                    <label>COMPLAINT ID</label><br>
+                    <label><%=detail.ComplaintID%><label><br>
+                    
+                    <label>USERNAME</label><br>
+                    <label><%=detail.username%><label><br>
+                    
+                    <label>Location</label><br>
+                    <label><%=detail.Location%><label><br>
+
+                    <label>Description</label><br>
+                    <label><%=detail.Description%><label><br>
+
+                    <label>Type Of Waste</label><br>
+                    <label><%=detail.Type_waste%><label><br>
+
+                    <label>CITY</label><br>
+                    <label><%=detail.City%><label><br>
+
+                    <label>DATE</label><br>
+                    <label><%=detail.Date%><label><br>
+
+                    <label>STREET</label><br>
+                    <label><%=detail.Street%><label><br>
+
+                    <label>RECOMMENDED TEAM SIZE</label><br>
+                    <label><%=detail.rec_team_size%><label><br>
+
+                </div>
+            </div>
+        <% }); %>
+    </div>
+</body>

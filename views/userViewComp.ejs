@@ -8,9 +8,10 @@
             <div class="card">
                 <% details.forEach(function(detail){%>
                 <div class = "container">
+                    <form action = "viewComp" method = "post">
                     <img src = "<%=detail.Image%>" alt="Image" />
                     <label>COMPLAINT ID</label><br>
-                    <label><%=detail.ComplaintID%><label><br>
+                    <p id="CID",name="CID",value="CID"><%=detail.ComplaintID%></p><br>
                     
                     <label>USERNAME</label><br>
                     <label><%=detail.username%><label><br>
@@ -35,17 +36,9 @@
 
                     <label>RECOMMENDED TEAM SIZE</label><br>
                     <label><%=detail.rec_team_size%><label><br>
-
-                    <form action = "resComplaint" method = "POST">
-                    
-                        <input type="hidden" name="CID" value="<%=detail.ComplaintID%>"/>
-                        <input type="hidden" name="uname" value="<%=detail.username%>"/>
-                        <input type="hidden" name="Loc" value="<%=detail.Location%>"/>
-                        <input type="hidden" name="Desc" value="<%=detail.Description%>"/>
-                        <input type="hidden" name="TOW" value="<%=detail.Type_waste%>"/>
-                        <input type="hidden" name="rts" value="<%=detail.rec_team_size%>"/>
-
-                        <a href = "admin/viewComp/resComp"><input type = "submit" value = "RESOLVE"></a>
+                        
+                    <input type="hidden" name="CID" value="<%=detail.ComplaintID%>" />
+                    <input type = "submit" value = "Solved">
                     </form>
                 </div>
                 <% }); %>

@@ -1,0 +1,26 @@
+<html>
+    <head>
+        <title>Resolving Complaints</title>
+    </head>
+    <body>
+        <form action = "resComp" method = "post">
+            <label>Team_lead</label>
+            <input type = "text" id = "Team_lead" placeholder = "Team_lead" name = "Team_lead"><br>
+
+            <label>Vehicle Number</label>
+            <input type = "number" id = "vno" name="vno" min="1" max="37">
+
+            <label>Number of people in team</label>
+            <input type = "number" id = "pno" name="pno" min="1" max="6">
+
+            <label>Priority</label><br>
+            <select name = "pty" id = "pty" placeholder = "pty">
+                <option value = "High">High</option>
+                <option value = "Medium">Medium</option>
+                <option value = "Low">Low</option>
+            </select>
+
+            <input type = "submit" value = "RESOLVE">
+        </form>
+    </body>
+</html>

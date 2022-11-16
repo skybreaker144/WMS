@@ -112,19 +112,48 @@ app.post('/user/regComp', function (req, res) {
         if (error) {
             console.log(error);
         }
-        else if (results.length > 0) {
-            req.flash("error", "This Complaint already Exist!");
-            res.redirect("/user/regComp");
-        }
+        //else if (results.length > 0) {
+        //    req.flash("error", "This Complaint already Exist!");
+        //    console.log("Hello");
+        //    res.redirect("/user/regComp");
+        //}
         else {
-            var newLogin = "insert into regcomp(username, location, description, Type_waste, Image, City, Date, Street, rec_team_size) values(?,?,?,?,?,?,?,?,?)";
-            var loginvalue = [req.session.username, req.body.Location,req.body.Desc, req.body.wtype, req.body.img, req.body.city, req.body.date, req.body.street, req.body.rts];
-            connection.query(newLogin, loginvalue, function (error, results, fields) {
+            var newreg = "insert into regcomp(username, location, description, Type_waste, Image, City, Date, Street, rec_team_size) values(?,?,?,?,?,?,?,?,?)";
+            var addreg = [req.session.username, req.body.Location,req.body.Desc, req.body.wtype, req.body.img, req.body.city, req.body.date, req.body.street, req.body.rts];
+            connection.query(newreg, addreg, function (error, results, fields) {
                 if (error) {
                     console.log(error);
                     res.redirect('/user/regComp');
                 } else {
-                    req.flash("success", "User registered sucessfully");
+                    req.flash("success", "Complaint registered sucessfully");
+                    res.redirect('/user');
+                }
+            });
+        }
+    });
+
+});
+
+app.post('/admin/viewComp', function (req, res) {
+    connection.query('SELECT * FROM regcomp', function (error, results, fields) {
+        //req.flash("hey")
+        if (error) {
+            console.log(error);
+        }
+        //else if (results.length > 0) {
+        //    req.flash("error", "This Complaint already Exist!");
+        //    console.log("Hello");
+        //    res.redirect("/user/regComp");
+        //}
+        else {
+            var newreg = "insert into regcomp(username, location, description, Type_waste, Image, City, Date, Street, rec_team_size) values(?,?,?,?,?,?,?,?,?)";
+            var addreg = [req.session.username, req.body.Location,req.body.Desc, req.body.wtype, req.body.img, req.body.city, req.body.date, req.body.street, req.body.rts];
+            connection.query(newreg, addreg, function (error, results, fields) {
+                if (error) {
+                    console.log(error);
+                    res.redirect('/user/regComp');
+                } else {
+                    req.flash("success", "Complaint registered sucessfully");
                     res.redirect('/user');
                 }
             });
@@ -139,7 +168,7 @@ app.post('/user/remComp', function (req, res) {
         if (error) {
             console.log(error);
         }
-        // else if (results.length > 0) {
+        // else if (results.length == 0) {
         //     req.flash("error", "This complaint does not Exist!");
         //     res.redirect("/");
         // }
@@ -219,7 +248,7 @@ app.get("/user/viewComp", function (req, res) {
             }
             else {
                 console.log(results);
-                res.render("viewComp.ejs", { details: results });
+                res.render("userViewComp.ejs", { details: results });
             }
         })
     } else {
@@ -248,13 +277,14 @@ app.get("/admin/Myprof", function (req, res) {
 
 app.get("/admin/viewComp", function (req, res) {
     if (req.session.loggedin) {
-        str = "select * from regcomp";
+        str = "select * from regcomp where IS_SOLVED = 'NO'";
         connection.query(str, function (err, results, fields) {
             if (err) {
                 console.log(err);
             }
             else {
                 console.log(results);
+                // console.log(req);
                 res.render("viewComp.ejs", { details: results });
             }
         })
@@ -263,6 +293,46 @@ app.get("/admin/viewComp", function (req, res) {
         res.redirect("/");
     }
 })
+
+app.post('/admin/resComplaint', function (req, res) {
+    //console.log(req);
+    globalThis.CID = req.body.CID;
+    globalThis.uname = req.body.uname;
+    globalThis.Loc = req.body.Loc;
+    globalThis.Desc = req.body.Desc;
+    globalThis.TOW = req.body.TOW;
+    globalThis.rts = req.body.rts;
+    //console.log(globalThis.CID);
+    res.redirect('resComp');
+});
+
+app.post('/admin/resComp', function (req,res) {
+    connection.query('SELECT * FROM rescomp', function (error, results, fields) {
+        //req.flash("hey")
+        if (error) {
+            console.log(error);
+        }
+        else {
+            var newres = "insert into rescomp(ComplaintID, username, Location, Description, Type_waste, rec_team_size, Team_lead, Vehicle_Number, No_ppl, Priority) values (?,?,?,?,?,?,?,?,?,?)";
+            var addres = [globalThis.CID, globalThis.uname, globalThis.Loc, globalThis.Desc, globalThis.TOW, globalThis.rts, req.body.Team_lead, req.body.vno, req.body.pno, req.body.pty];
+            delete globalThis.CID;
+            delete globalThis.uname;
+            delete globalThis.Loc;
+            delete globalThis.Desc;
+            delete globalThis.TOW;
+            delete globalThis.rts;
+            connection.query(newres, addres, function (error, results, fields) {
+                if (error) {
+                    console.log(error);
+                    res.redirect('/admin/resComp');
+                } else {
+                    req.flash("success", "Complaint registered sucessfully");
+                    res.redirect('/admin');
+                }
+            });
+        }
+    });
+});
 
 app.post('/admin/remUser', function (req, res) {
     connection.query('SELECT * FROM login', function (error, results, fields) {
@@ -298,6 +368,29 @@ app.post('/admin/remUser', function (req, res) {
     });
 });
 
+app.post('/user/viewComp', function (req, res) {
+    connection.query('SELECT * FROM regcomp', function (error, results, fields) {
+        if (error) {
+            console.log(error);
+        }
+        else {
+            console.log("We made it!!!")
+            var remcomp = "UPDATE regcomp SET IS_SOLVED = 'YES' WHERE ComplaintID = ?";
+            //console.log(req);
+            var CID = req.body.CID;
+            connection.query(remcomp, CID, function (error, results, fields) {
+                if (error) {
+                    console.log(error);
+                    res.redirect('/user/viewComp');
+                } else {
+                    req.flash("success", "Complaint deleted sucessfully");
+                    res.redirect('/user');
+                }
+            });
+        }
+        });
+});
+
 app.get('/user/regComp',function(request,response){
     response.render('regComp.ejs')
 });
@@ -307,11 +400,15 @@ app.get('/user/remComp',function(request,response){
 });
 
 app.get('/user/viewComp',function(request,response){
-    response.render('viewComp.ejs')
+    response.render('userViewComp.ejs')
 });
 
 app.get('/admin/remUser',function(request,response){
     response.render('remUser.ejs')
+});
+
+app.get('/admin/resComp',function(request,response){
+    response.render('resComp.ejs')
 });
 
 var server = app.listen(3000, function () {
